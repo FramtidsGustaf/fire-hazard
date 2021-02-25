@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 function App() {
 	const [hazards, setHazards] = useState(null);
-  const hejsna = "";
 
 	const handleOnClick = () => {
 		if ('geolocation' in navigator) {
