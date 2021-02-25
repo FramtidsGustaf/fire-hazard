@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Footer from './components/Footer';
+import Header from './components/Header';
 
 import HazardsPage from './routes/HazardsPage';
 import LandingPage from './routes/LandingPage';
@@ -7,6 +9,7 @@ import LandingPage from './routes/LandingPage';
 function App() {
 	return (
 		<>
+			<Header/>
 			<Router>
 				<Switch>
 					<Route path='/hazards'>
@@ -17,6 +20,7 @@ function App() {
 					</Route>
 				</Switch>
 			</Router>
+			<Footer/>
 		</>
 	);
 }
