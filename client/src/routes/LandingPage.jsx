@@ -6,7 +6,7 @@ import { StyledLandingPage as SLanding } from '../styled/PageStyled';
 export default function LandingPage() {
 	return (
 		<SLanding>
-			<Link to='/hazards'> Fire Hazard 
+			<Link to='/hazards'> Brandrisk
         <Fire/>
       </Link>
 		</SLanding>
