@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import Chart from '../components/Chart';
 import { StyledHazardsPage as SHazardsPage } from '../styled/PageStyled';
-import { VictoryBar, VictoryChart } from 'victory';
 
 export default function HazardsPage() {
 	const [hazards, setHazards] = useState(null);
-	const data = [
-		{ Date: 'Idag', Grass: 3 },
-		{ Date: 'Imorgon', Grass: 3 },
-		{ Date: '2021-02-28', Grass: 3 },
-		{ Date: '2021-03-01', Grass: 3 },
-		{ Date: '2021-03-02', Grass: 3 },
-		{ Date: '2021-03-03', Grass: 3 },
-	];
 
 	const getHazards = () => {
 		if ('geolocation' in navigator) {
@@ -21,20 +13,20 @@ export default function HazardsPage() {
 					`http://localhost:9000/get-hazards/${latitude}/${longitude}`
 				);
 				const data = await response.json();
-				console.log(data);
+				setHazards(data);
 			});
 		}
 	};
 
 	useEffect(() => {
-		// getHazards();
+		getHazards();
 	}, []);
 
 	return (
 		<SHazardsPage>
-			<VictoryChart domainPadding={20}>
-				<VictoryBar data={data} x="Date" y="Grass"/>
-			</VictoryChart>
+		{
+			hazards ? <Chart hazards={hazards}/> : 'Loading'
+		}
 		</SHazardsPage>
 	);
 }
