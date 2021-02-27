@@ -10,6 +10,7 @@ const TitleStyled = styled.h1`
   transform: translate(-50%, -50%);
   font-family: ${fonts.title};
   color: ${colors.text};
+  font-size: 4rem;
 `
 
 export default TitleStyled;

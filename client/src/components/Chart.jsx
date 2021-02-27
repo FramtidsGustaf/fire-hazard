@@ -2,55 +2,44 @@ import React, { useEffect, useState } from 'react';
 import { VictoryBar, VictoryChart } from 'victory';
 import TitleStyled from '../styled/TitleStyled';
 
-
 export default function Chart({ hazards }) {
 	const [data, setData] = useState([]);
 
-	const getPeriod = () => {
-		const day = new Date().getDay();
-		let period = ['Idag', 'Imorgon'];
-		const periods = [
-			['Tisdag', 'Onsdag', 'Torsdag', 'Fredag'],
-			['Onsdag', 'Torsdag', 'Fredag', 'Lördag'],
-			['Torsdag', 'Fredag', 'Lördag', 'Söndag'],
-			['Fredag', 'Lördag', 'Söndag', 'Måndag'],
-			['Lördag', 'Söndag', 'Måndag', 'Tisdag'],
-			['Söndag', 'Måndag', 'Tisdag', 'Onsdag'],
-			['Måndag', 'Tisdag', 'Onsdag', 'Torsdag'],
-		];
-		period = [...period, ...periods[day]];
-		// setPeriod(period);
-		return period;
+	const fetchPeriod = async () => {
+		const url = 'http://localhost:9000/get-period';
+		const response = await fetch(url);
+		const data = await response.json();
+		return data;
 	};
 
-	const buildData = (period, hazards) => {
+	const buildData = async (fetchPeriod, hazards) => {
+		const period = await fetchPeriod();
 		const data = [];
-
-		for (let i = 0; i < period.length; i++) {
-			data.push({ dag: period[i], brandrisk: hazards[i].Grass });
+		if (hazards) {
+			for (let i = 0; i < hazards.length; i++) {
+				data.push({ dag: period[i], brandrisk: hazards[i].Grass });
+			}
 		}
-    console.log(data);
 		setData(data);
 	};
 
 	useEffect(() => {
-		//getPeriod();
-		buildData(getPeriod(), hazards);
+		buildData(fetchPeriod, hazards);
 	}, [hazards]);
 
 	return (
 		<>
 			{data ? (
-        <>
-        <TitleStyled>Brandrisk</TitleStyled>
-				<VictoryChart
-					dependentAxis
-					domainPadding={20}
-					domain={{ y: [0, 5] }}
-					width={600}>
-					<VictoryBar data={data} x='dag' y='brandrisk' />
-				</VictoryChart>
-        </>
+				<>
+					<TitleStyled>Brandrisk</TitleStyled>
+					<VictoryChart
+						dependentAxis
+						domainPadding={20}
+						domain={{ y: [0, 5] }}
+						width={600}>
+						<VictoryBar data={data} x='dag' y='brandrisk' />
+					</VictoryChart>
+				</>
 			) : (
 				'Loading'
 			)}
